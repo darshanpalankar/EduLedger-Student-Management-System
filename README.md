@@ -34,4 +34,5 @@ EduLedger is a Python-based Student Management System designed to manage and org
 student-management-system/
 │
 ├── EduLedger.py
+├── Eduledger-SMS.png
 └── README.md
