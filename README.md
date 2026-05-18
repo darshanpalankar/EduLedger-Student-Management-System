@@ -3,10 +3,10 @@ EduLedger is a Python-based Student Management System designed to manage and org
 
 ---
 <p align="center">
-  <img src="https://github.com/darshanpalankar/EduLedger-Student-Management-System/blob/main/Eduledger-SMS.png" width="400"/>
+  <img src="https://github.com/darshanpalankar/EduLedger-Student-Management-System/blob/main/Eduledger-SMS.png" width="500"/>
 </p>
----
 
+---
 ## 📌 Overview
 **EduLedger** is a Python-based Student Management System designed to efficiently manage and organize student records. It enables users to perform CRUD operations (Create, Read, Update, Delete) using an SQLite database, ensuring structured and persistent data handling.
 
