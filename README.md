@@ -28,8 +28,8 @@ EduLedger is a Python-based Student Management System designed to manage and org
 - **Command Line Interface (CLI)**
 
 ---
-
 ## 📂 Project Structure
+
 ```bash
 student-management-system/
 │
