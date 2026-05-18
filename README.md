@@ -3,7 +3,7 @@ EduLedger is a Python-based Student Management System designed to manage and org
 
 ---
 <p align="center">
-  <img src="[images/screenshot.png](https://github.com/darshanpalankar/EduLedger-Student-Management-System/blob/main/Eduledger-SMS.png" width="400"/>
+  <img src="https://github.com/darshanpalankar/EduLedger-Student-Management-System/blob/main/Eduledger-SMS.png" width="400"/>
 </p>
 ---
 
