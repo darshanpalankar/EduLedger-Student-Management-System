@@ -1,56 +1,16 @@
-import sqlite3 as sql
 from pyfiglet import Figlet
-import fontstyle as font
+import sqlite3 as sql
 import time
+import stylizer
+    
+color = stylizer.Color()
+style = stylizer.Style()
 
-class Color:
-    def black(self, string):
-        return f"\033[90m{string}\033[0m"
-    
-    def red(self, string):
-        return f"\033[91m{string}\033[0m"
-    
-    def green(self, string):
-        return f"\033[92m{string}\033[0m"
-    
-    def yellow(self, string):
-        return f"\033[93m{string}\033[0m"
-    
-    def blue(self, string):
-        return f"\033[94m{string}\033[0m"
-    
-    def magenta(self, string):
-        return f"\033[95m{string}\033[0m"
-    
-    def cyan(self, string):
-        return f"\033[96m{string}\033[0m"
-
-    def white(self, string):
-        return f"\033[97m{string}\033[0m"
-
-class Style:
-    def bold(self, string):
-        return f"\033[1m{string}\033[0m"
-    
-    def italic(self, string):
-        return f"\033[3m{string}\033[0m"
-    
-    def dim(self, string):
-        return f"\033[2m{string}\033[0m"
-    
-    def underline(self, string):
-        return f"\033[4m{string}\033[0m"
-    
-    def blink(self, string):
-        return f"\033[5m{string}\033[0m"
-    
-
-color = Color()
-style = Style()
-
+# Banner
 x = Figlet(font='slant')
+banner = color.yellow(x.renderText("EduLedger"))
+
 print(color.green("\n======================================================="))
-banner = style.bold(color.yellow(x.renderText("EduLedger")))
 print(banner)
 print(color.green("======================================================="))
 
@@ -60,7 +20,7 @@ time.sleep(0.5)
 def connect():
     connection = sql.connect("students.db")
     time.sleep(0.5)
-    print(color.magenta("Connected to students database."))
+    print(style.italic(color.magenta("Connected..!!!")))
     return connection
 
 # Class Database
@@ -90,12 +50,12 @@ class DataBase:
         cur.execute("INSERT INTO Students(Name, Age) VALUES(?, ?)", (name, age))
        
         self.connection.commit()
-        print(color.green("✔️ Data Inserted Successfully!"))
+        print(color.green("✔️  Data Inserted Successfully!"))
     
     def update_data(self):
         cur = self.connection.cursor()
         try:
-            student_id = int(input(font.apply("Enter student ID : "),'bold'))
+            student_id = int(input(style.bold("Enter student ID : ")))
             name = input("Enter name of the student : ")
             age = int(input("Enter age of the student : "))
             cur.execute(f'''
@@ -107,13 +67,19 @@ class DataBase:
             print("Invalid Student ID!")
         except ValueError:
             print("Invalid Student ID!")
+    
+    def delete_row(self, student_id):
+        cur = self.connection.cursor()
+        cur.execute(f'''ALTER TABLE Students DELETE ROW WHERE ID = ?,{student_id}''')
+        print(f"{student_id} ID is deleted!")
+        self.connection.commit()
 
     def drop_table(self):
         cur = self.connection.cursor()
         cur.execute("DROP TABLE IF EXISTS Students")
         print(color.green("Table is deleted successfully!"))
         self.connection.commit()
-
+    
 # Class students
 class Student:
     def __init__(self, connection):
@@ -123,6 +89,20 @@ class Student:
         cur = self.connection.cursor()
         cur.execute("SELECT * FROM Students")
         return cur.fetchall()
+
+    def search_student(self):
+        cur = self.connection.cursor()
+        try:
+            name = input("Enter student name: ")
+
+            cur.execute(f"SELECT * FROM students WHERE name = {name}")
+            result = cur.fetchall()
+
+            for row in result:
+                print(row)
+
+        except Exception as e:
+            print("Error:", e)
 
     def display(self, student_id):
         cur = self.connection.cursor()
@@ -146,7 +126,7 @@ def main():
     db.create_table()
 
     student = Student(connection)
-    time.sleep(0.5)
+
     while True:
         print(color.cyan("\n1. Insert Student Info"))
         print(color.cyan("2. Display Student Info"))
@@ -162,7 +142,7 @@ def main():
 
         elif choice == '2':
             try:
-                student_id = int(input("Enter student ID: "))
+                student_id = int(input(color.yellow("Enter student ID: ")))
                 student.display(student_id)
             except ValueError:
                 print("❌ Invalid ID")
@@ -172,14 +152,28 @@ def main():
                 db.update_data()
             except Exception as e:
                 print(color.red("Error : ", e))
+        
+        elif choice == '4':
+            try:
+                student_id = int(input(color.yellow("Enter student ID: ")))
+                db.delete_row(student_id)
+            except Exception as e:
+                print(color.red("Error : Student not found!"))
 
-        elif choice == '4' or choice.lower() == 'exit':
-            print(font.apply(color.yellow("Exiting..."),'bold'))
+        elif choice == '5':
+            try:
+                student.search_student()
+            except Exception as e:
+                print(color.red("Error : ", e))
+
+        elif choice == '6' or choice.lower() == 'exit':
+            print(style.bold(color.yellow("Exiting...")))
             break
         
         else:
             x = color.red("\n❌ Invalid choice")
-            print(font.apply(x,'bold'))
+            print(style.bold(x))
+            print("Please enter choice number!")
     connection.close()
 
 if __name__ == "__main__":
